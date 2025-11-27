@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cors());
 
 // MongoDB Connection
-mongoose.connect("mongodb+srv://bharath:bharath@cluster0.yjcqvru.mongodb.net/?appName=Cluster0")
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
 
@@ -25,15 +25,13 @@ const locationSchema = new mongoose.Schema({
 const Location = mongoose.model("Location", locationSchema);
 
 app.get("/", (req, res) => {
-  res.send("Hello World");
+  res.send("Backend is running ✔️");
 });
 
 // Endpoint
 app.post("/api/location", async (req, res) => {
   try {
-    // ⭐ PRINT THE LOCATION DATA RECEIVED FROM FRONTEND
-    console.log("📍 Received Location Data:");
-    console.log(req.body);
+    console.log("📍 Received Location Data:", req.body);
 
     const doc = new Location(req.body);
     await doc.save();
@@ -46,4 +44,5 @@ app.post("/api/location", async (req, res) => {
 });
 
 // Start server
-app.listen(5000, () => console.log("Server running on port 5000"));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
