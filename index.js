@@ -24,6 +24,10 @@ const locationSchema = new mongoose.Schema({
 
 const Location = mongoose.model("Location", locationSchema);
 
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});
+
 // Endpoint
 app.post("/api/location", async (req, res) => {
   try {
